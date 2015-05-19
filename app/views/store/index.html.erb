@@ -1,0 +1,14 @@
+<% @product.each do |product|%>
+
+	<h3><%= product.title%></h3>
+	<table>
+		(<%#= product.category.name%>)
+		<tr>
+			<td>><%= product.description%></td>
+		</tr>
+		<tr>
+			<td>>Price:- <%= product.price.eql?(nil) ? "Not Available" : product.price %></td>
+		</tr>>
+	</table>
+<%end%>
+
