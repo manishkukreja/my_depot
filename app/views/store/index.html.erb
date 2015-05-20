@@ -2,13 +2,14 @@
 
 	<h3><%= product.title%></h3>
 	<table>
-		(<%#= product.category.name%>)
+		<!-- (<%#= product.category.name%>) -->
 		<tr>
-			<td>><%= product.description%></td>
+			<td><%= product.description%></td>
 		</tr>
 		<tr>
 			<td>>Price:- <%= product.price.eql?(nil) ? "Not Available" : product.price %></td>
 		</tr>>
 	</table>
+	<%= button_to "Add to Cart", line_items_path(product_id:product.id)%>
 <%end%>
 
