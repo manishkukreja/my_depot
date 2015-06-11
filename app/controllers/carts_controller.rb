@@ -1,6 +1,5 @@
 class CartsController < ApplicationController
   before_action :set_cart, only: [:show, :edit, :update, :destroy]
-
   # GET /carts
   # GET /carts.json
   def index
@@ -10,6 +9,7 @@ class CartsController < ApplicationController
   # GET /carts/1
   # GET /carts/1.json
   def show
+    @cart = Cart.where(user_id: current_user.id).take rescue nil
   end
 
   # GET /carts/new
@@ -24,17 +24,19 @@ class CartsController < ApplicationController
   # POST /carts
   # POST /carts.json
   def create
-    @cart = Cart.new(cart_params)
-
-    respond_to do |format|
-      if @cart.save
-        format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
-        format.json { render :show, status: :created, location: @cart }
-      else
-        format.html { render :new }
-        format.json { render json: @cart.errors, status: :unprocessable_entity }
-      end
-    end
+    # raise params.inspect
+    # if session[:cart_id]
+    #   @cart = Cart.find(session[:cart_id]) 
+    # else  
+    #   @cart = Cart.new(cart_params)
+    #   @cart.save
+    #   session[:cart_id]=@cart.id
+    # end
+    #   respond_to do |format|
+    #       format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
+    #       format.json { render :show, status: :created, location: @cart }
+        
+    #   end  
   end
 
   # PATCH/PUT /carts/1
@@ -54,9 +56,10 @@ class CartsController < ApplicationController
   # DELETE /carts/1
   # DELETE /carts/1.json
   def destroy
+    @cart = current_user_cart
     @cart.destroy
     respond_to do |format|
-      format.html { redirect_to carts_url, notice: 'Cart was successfully destroyed.' }
+      format.html { redirect_to store_index_path, notice: 'Cart was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -64,11 +67,17 @@ class CartsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cart
-      @cart = Cart.find(params[:id])
+      @cart = Cart.find(params[:id]) rescue nil
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def cart_params
-      params[:cart]
+      params.require(:cart).permit(:user_id)
+      #params[:cart]
     end
+
+    def reset_cart
+      session[:cart_id]=nil
+    end
+
 end

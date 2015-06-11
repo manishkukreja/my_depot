@@ -8,8 +8,12 @@
 
 
 
-Product.delete_all
+#Product.delete_all
 
 (1..10).each do |x|
-	product =Product.create(title: "product_#{x}",description: " this is wonder product #{x}", quantity: 10, category: 1,active: true )
+	product =Product.create(title: "product_#{x}",
+description: " this is wonder product #{x}",
+quantity: 10,
+category_id: 1,
+active: true)
 end	

@@ -24,14 +24,9 @@ class LineItemsController < ApplicationController
   # POST /line_items
   # POST /line_items.json
   def create
-    raise session[:cart_id].inspect
-    @cart = current_cart
-    raise @cart.inspect
+    cart = current_user_cart
     @product = Product.where(id: "#{params[:product_id]}")
-    @line_item = @cart.line_items.build(product_id: "#{params[:product_id]}")
-    #raise @line_item.inspect
-    #@line_item = LineItem.new(line_item_params)
-
+    @line_item = cart.line_items.build(product_id: "#{params[:product_id]}")
     respond_to do |format|
       if @line_item.save
         format.html { redirect_to @line_item.cart, notice: 'Line item was successfully created.' }
@@ -62,7 +57,7 @@ class LineItemsController < ApplicationController
   def destroy
     @line_item.destroy
     respond_to do |format|
-      format.html { redirect_to line_items_url, notice: 'Line item was successfully destroyed.' }
+      format.html { redirect_to @line_item.cart, notice: 'Line item was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

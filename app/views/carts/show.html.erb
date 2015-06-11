@@ -1,4 +1,18 @@
 <p id="notice"><%= notice %></p>
+<% if @cart%>
+	<% @cart.line_items.each do |li|%>
+		<li>
+			<%= li.product.title%>
+			<%= link_to 'Edit', edit_cart_path(@cart) %> |
+			<%= link_to 'Back', carts_path %>
+			<%= link_to "Remove Item" , li, controller: :line_items,method: :delete, date: {confirm: "Are you sure"}%> 
+		</li>
+	<%end%>
+<% else%>
+	<li><%= "Your cart is Empty"%></li>
+<%end%>
 
-<%= link_to 'Edit', edit_cart_path(@cart) %> |
-<%= link_to 'Back', carts_path %>
+<b><%= link_to "Continue Shopping" , store_index_path%></b>
+<%= link_to "Empty Your Cart" , @cart ,method: :delete  %>
+
+
